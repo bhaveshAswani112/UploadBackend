@@ -84,15 +84,18 @@ uploadRouter.post("/upload-code", async (req : Request, res : Response ) : Promi
             }
             const {githubUrl,id} = data.data
             const gitId = id.toString()
-            // await git.clone(githubUrl,path.join(dirname,`output/${id}`))
-            // const paths = await getPaths(path.join(dirname,`output/${id}`))
-            // for(const file of paths) {
-            //     const fileName = file.replace(dirname, "").replace(/\\/g, "/").startsWith("/") ? file.replace(dirname, "").replace(/\\/g, "/").substring(1) : file.replace(dirname, "").replace(/\\/g, "/")
-            //     // console.log(fileName)
-            //     await uploadToS3(fileName,file)
-            // }
-            // fs.rmSync(path.join(dirname,`output/${id}`),{recursive : true, force : true})
-           
+            await git.clone(githubUrl,path.join(dirname,`output/${id}`))
+            const paths = await getPaths(path.join(dirname,`output/${id}`))
+            for(const file of paths) {
+                const fileName = file.replace(dirname, "").replace(/\\/g, "/").startsWith("/") ? file.replace(dirname, "").replace(/\\/g, "/").substring(1) : file.replace(dirname, "").replace(/\\/g, "/")
+                // console.log(fileName)
+                await uploadToS3(fileName,file)
+            }
+            
+            fs.promises.rm(path.join(dirname, `output/${id}`), { 
+                recursive: true, 
+                force: true 
+            }).catch(err => console.error('Error removing directory:', err))
             redisClient.lPush("build-queue", gitId )
             redisClient.hSet("status",gitId , "uploaded")
             return res.status(200).json({
