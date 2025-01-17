@@ -1,0 +1,1 @@
+{"root":["./src/app.ts","./src/constant.ts","./src/index.ts","./src/redisclient.ts","./src/routes/upload.route.ts"],"version":"5.7.3"}
