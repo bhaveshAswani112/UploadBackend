@@ -31,7 +31,7 @@ app.post("/webhook",cors({
       if(githubEvent==="push") {
           const id = req.body.repository.id
           const gitId = id.toString()
-          const githubUrl = req.body.clone_url
+          const githubUrl = req.body.repository.clone_url
           await git.clone(githubUrl,path.join(dirname,`output/${gitId}`))
           const paths = await getPaths(path.join(dirname,`output/${gitId}`))
           for(const file of paths) {
