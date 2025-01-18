@@ -17,6 +17,9 @@ app.post("/webhook",cors({
     try {
       const githubEvent = req.headers['x-github-event'];
       console.log(githubEvent)
+      console.log(req.body)
+      console.log(req.host)
+      console.log(req.hostname)
       if(githubEvent==="push") {
 
       }
