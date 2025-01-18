@@ -1,6 +1,7 @@
-import express from "express"
+import express, {Request, Response} from "express"
 import cors from "cors"
 import uploadRouter from "./routes/upload.route.js"
+
 
 
 const app = express()
@@ -22,6 +23,13 @@ app.post("/webhook",cors({
     } catch (error) {
       return res.status(200).json({})
     }
+})
+
+
+app.get("/health",cors({origin : "*"}),async (req : Request, res : Response) : Promise<any> => {
+    return res.status(200).json({
+      message : "Working fine"
+    })
 })
 
 app.use(
