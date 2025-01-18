@@ -16,6 +16,7 @@ app.post("/webhook",cors({
 }),express.json({type: 'application/json'}), async (req,res) : Promise<any> => {
     try {
       const githubEvent = req.headers['x-github-event'];
+      console.log(githubEvent)
       if(githubEvent==="push") {
 
       }
